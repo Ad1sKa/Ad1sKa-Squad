@@ -4,13 +4,13 @@ import requests
 from datetime import datetime
 
 # --- 1. ДАННЫЕ (ОТРЕДАКТИРУЙ ЭТО) ---
-BOT_TOKEN = "8714620396:AAGRsWh-vcDEzWE4GqE19d8zUy4znnHYRho"
-GROUP_CHAT_ID = "-1003816680156" # Например: "-100123456789"
+# Токен твоего бота: 8714620396:AAGRsWh-vcDEzWE4GqE19d8zUy4znnHYRho
+GROUP_CHAT_ID = "-1003816680156" 
 MASTER_PASSWORD = "342z50f9dcrtxj6-mk87" 
 
 st.set_page_config(page_title="Ad1sKa Squad HQ", page_icon="🛡️")
 
-# --- 2. СТИЛИЗАЦИЯ (ЗОЛОТО НА ЧЕРНОМ) ---
+# --- 2. СТИЛИЗАЦИЯ ---
 st.markdown("""
     <style>
     .stApp { background-color: #0e1117; color: #ffffff; }
@@ -34,9 +34,9 @@ input_pass = st.sidebar.text_input("Введите секретный ключ",
 
 if input_pass == MASTER_PASSWORD:
     st.sidebar.success("Доступ разрешен!")
-       if st.sidebar.button("🚨 ОТПРАВИТЬ SOS В ГРУППУ"):
+    if st.sidebar.button("🚨 ОТПРАВИТЬ SOS В ГРУППУ"):
         text = "🚨 ВНИМАНИЕ! АРХИТЕКТОР ОБЪЯВИЛ ОБЩИЙ СБОР! 🚨\nВСЕМ УЧАСТНИКАМ AD1SKA SQUAD СРОЧНО ВЫЙТИ НА СВЯЗЬ!"
-        # Прописал адрес ВРУЧНУЮ, чтобы ничего не склеивалось
+        # Прямая ссылка без переменных во избежание ошибок склейки
         url = "https://api.telegram.org"
         
         try:
@@ -45,7 +45,7 @@ if input_pass == MASTER_PASSWORD:
                 st.sidebar.snow()
                 st.sidebar.success("Сигнал успешно отправлен!")
             else:
-                st.sidebar.error(f"Ошибка {res.status_code}. Проверь: 1. Бот — АДМИН в группе. 2. Верный ID группы.")
+                st.sidebar.error(f"Ошибка {res.status_code}. Проверь: 1. Бот - админ в группе. 2. ID группы верный.")
         except Exception as e:
             st.sidebar.error(f"Сбой связи: {e}")
 else:
@@ -76,20 +76,18 @@ st.divider()
 st.subheader("👥 БРАТСТВО СКВАДА")
 squad_members = [
     {"role": "👑 Архитектор (Основатель)", "nick": "Ad1sKa"},
-    {"role": "🛡️ Участник", "nick": "Здесь может оказаться ваше имя"},
-    {"role": "🛡️ Участник", "nick": "Здесь может оказаться ваше имя"}
+    {"role": "🛡️ Участник", "nick": "Твой_Друг_1"},
+    {"role": "🛡️ Участник", "nick": "Твой_Друг_2"}
 ]
 
 for member in squad_members:
     st.markdown(f"**{member['role']}**: `{member['nick']}`")
 
 # --- 7. ПЛЕЕР ГИМНА ---
-st.divider()
-st.subheader("🎵 ГИМН КОМАНДЫ")
 if os.path.exists("гимн.mp3"):
+    st.divider()
+    st.subheader("🎵 ГИМН КОМАНДЫ")
     st.audio("гимн.mp3")
-else:
-    st.caption("Файл гимн.mp3 не найден")
 
 st.divider()
 st.caption("© 2026 Ad1sKa Squad. Система защищена кодом Архитектора.")
