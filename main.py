@@ -3,97 +3,74 @@ import os
 import requests
 from datetime import datetime
 
-# --- 1. НАСТРОЙКИ (ОТРЕДАКТИРУЙ ТОЛЬКО ЭТО) ---
-# Твой секретный пароль для появления кнопки SOS
-MASTER_PASSWORD = "342z50f9dcrtxj6-mk87" 
-
-# Данные для Telegram
+# --- 1. НАСТРОЙКИ ---
+MASTER_PASSWORD = "ВАШ_ПАРОЛЬ_АРХИТЕКТОРА" 
 GROUP_CHAT_ID = "-1003816680156"
+# Прямой токен
+BOT_TOKEN = "8714620396:AAGRsWh-vcDEzWE4GqE19d8zUy4znnHYRho"
 
 st.set_page_config(page_title="Ad1sKa Squad HQ", page_icon="🛡️")
 
-# --- 2. СТИЛИЗАЦИЯ ---
+# --- 2. СТИЛЬ ---
 st.markdown("""
     <style>
     .stApp { background-color: #0e1117; color: #ffffff; }
-    h1 { color: #FFD700; text-align: center; font-family: 'Arial Black'; text-shadow: 2px 2px #000; }
-    .stButton>button { width: 100%; border-radius: 10px; border: 1px solid #FFD700; background-color: #1a1a1a; color: white; transition: 0.3s; }
-    .stButton>button:hover { background-color: #FFD700; color: black; }
+    h1 { color: #FFD700; text-align: center; font-family: 'Arial Black'; }
+    .stButton>button { width: 100%; border-radius: 10px; border: 1px solid #FFD700; background-color: #1a1a1a; color: white; }
     </style>
     """, unsafe_allow_html=True)
 
-# --- 3. ТАЙМЕР ЕДИНСТВА ---
+# --- 3. ШАПКА ---
 start_date = datetime(2026, 3, 14) 
 delta = datetime.now() - start_date
-
 st.title("AD1SKA SQUAD HQ")
-st.markdown(f"<h3 style='text-align: center; color: #00FF00;'>🛡️ МЫ ЕДИНЫ: {delta.days} ДНЕЙ</h3>", unsafe_allow_html=True)
+st.markdown(f"<h3 style='text-align: center; color: #00FF00;'>🛡️ ВМЕСТЕ: {delta.days} ДНЕЙ</h3>", unsafe_allow_html=True)
 st.divider()
 
-# --- 4. ПАНЕЛЬ АРХИТЕКТОРА ---
-st.sidebar.header("🔐 ДОСТУП АРХИТЕКТОРА")
-input_pass = st.sidebar.text_input("Введите секретный ключ", type="password")
+# --- 4. SOS ПАНЕЛЬ ---
+st.sidebar.header("🔐 ПАНЕЛЬ АРХИТЕКТОРА")
+input_pass = st.sidebar.text_input("Ключ доступа", type="password")
 
 if input_pass == MASTER_PASSWORD:
     st.sidebar.success("Доступ разрешен!")
-    if st.sidebar.button("🚨 ОТПРАВИТЬ SOS В ГРУППУ"):
-        # Добавляем время, чтобы сообщения не считались дублями
-        current_time = datetime.now().strftime("%H:%M:%S")
-        text = f"🚨 ВНИМАНИЕ! АРХИТЕКТОР ОБЪЯВИЛ ОБЩИЙ СБОР! 🚨\nМЕТКА ВРЕМЕНИ: {current_time}"
-        
-        # Прямая ссылка
-        full_url = "https://api.telegram.org"
+    if st.sidebar.button("🚨 ЗАПУСТИТЬ SOS"):
+        msg = f"🚨 ВНИМАНИЕ! АРХИТЕКТОР ОБЪЯВИЛ ОБЩИЙ СБОР! 🚨\nВРЕМЯ: {datetime.now().strftime('%H:%M:%S')}"
+        url = f"https://api.telegram.org{BOT_TOKEN}/sendMessage"
         
         try:
-            res = requests.post(full_url, data={"chat_id": GROUP_CHAT_ID, "text": text})
-            response_data = res.json()
+            # Делаем запрос с таймаутом, чтобы не зависало
+            res = requests.post(url, data={"chat_id": GROUP_CHAT_ID, "text": msg}, timeout=10)
             
-            if res.status_code == 200 and response_data.get("ok"):
+            if res.status_code == 200:
                 st.sidebar.snow()
-                st.sidebar.success(f"СИГНАЛ ПРИНЯТ ТЕЛЕГРАМОМ!")
+                st.sidebar.success("СИГНАЛ УШЕЛ В ЧАТ!")
             else:
-                # ВЫВОДИМ ТОЧНУЮ ПРИЧИНУ ОШИБКИ
-                error_msg = response_data.get('description', 'Неизвестная ошибка')
-                st.sidebar.error(f"Telegram отклонил: {error_msg}")
+                st.sidebar.error(f"Ошибка Telegram: {res.status_code}")
+                st.sidebar.write(res.text) # Покажет точную причину (например, бот не админ)
         except Exception as e:
-            st.sidebar.error(f"Сбой сети: {e}")
+            st.sidebar.error(f"Ошибка сети: {e}")
 else:
     if input_pass:
-        st.sidebar.error("Неверный ключ!")
+        st.sidebar.error("Неверный ключ")
 
-# --- 5. ЦИФРОВОЙ АРХИВ ---
-st.subheader("📁 ВЕРХОВНЫЙ АРХИВ")
+# --- 5. ДОКУМЕНТЫ ---
+st.subheader("📁 АРХИВ")
 files = {
     "📜 ДЕКЛАРАЦИЯ": "декларация о независимости.txt",
-    "⚖️ КОДЕКС И ПРАВИЛА": "кодекс поведения и правила.txt",
-    "🛡️ ВЕРХОВНЫЕ ЗАКОНЫ": "свод законов.txt",
-    "📄 ОБЩАЯ ХАРТИЯ": "хартия.txt"
+    "⚖️ КОДЕКС": "кодекс поведения и правила.txt",
+    "🛡️ ЗАКОНЫ": "свод законов.txt",
+    "📄 ХАРТИЯ": "хартия.txt"
 }
-
-col1, col2 = st.columns(2)
+cols = st.columns(2)
 for i, (name, path) in enumerate(files.items()):
-    with (col1 if i % 2 == 0 else col2):
+    with cols[i % 2]:
         if st.button(name):
             if os.path.exists(path):
-                with open(path, "r", encoding="utf-8") as f:
-                    st.info(f.read())
+                with open(path, "r", encoding="utf-8") as f: st.info(f.read())
 
-# --- 6. ЗОЛОТОЙ СОСТАВ ---
-st.divider()
-st.subheader("👥 БРАТСТВО СКВАДА")
-squad_members = [
-    {"role": "👑 Архитектор", "nick": "Ad1sKa"},
-    {"role": "🛡️ Участник", "nick": "Твой_Друг_1"},
-    {"role": "🛡️ Участник", "nick": "Твой_Друг_2"}
-]
-for member in squad_members:
-    st.markdown(f"**{member['role']}**: `{member['nick']}`")
-
-# --- 7. ПЛЕЕР ГИМНА ---
+# --- 6. ГИМН ---
 if os.path.exists("гимн.mp3"):
     st.divider()
-    st.subheader("🎵 ГИМН КОМАНДЫ")
     st.audio("гимн.mp3")
 
-st.divider()
-st.caption("© 2026 Ad1sKa Squad.")
+st.caption("© 2026 Ad1sKa Squad HQ")
