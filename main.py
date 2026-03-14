@@ -34,20 +34,24 @@ input_pass = st.sidebar.text_input("Введите секретный ключ",
 
 if input_pass == MASTER_PASSWORD:
     st.sidebar.success("Доступ разрешен!")
-    if st.sidebar.button("🚨 ОТПРАВИТЬ SOS В ГРУППУ"):
-        text = "🚨 ВНИМАНИЕ! АРХИТЕКТОР ОБЪЯВИЛ ОБЩИЙ СБОР! 🚨\nВСЕМ УЧАСТНИКАМ AD1SKA SQUAD СРОЧНО ВЫЙТИ НА СВЯЗЬ!"
-        # Прямая ссылка без переменных во избежание ошибок склейки
+        if st.sidebar.button("🚨 ОТПРАВИТЬ SOS В ГРУППУ"):
+        text = "🚨 ВНИМАНИЕ! АРХИТЕКТОР ОБЪЯВИЛ ОБЩИЙ СБОР! 🚨"
         url = "https://api.telegram.org"
         
         try:
+            # Отправляем запрос и сохраняем ответ
             res = requests.post(url, data={"chat_id": GROUP_CHAT_ID, "text": text})
+            
             if res.status_code == 200:
                 st.sidebar.snow()
-                st.sidebar.success("Сигнал успешно отправлен!")
+                st.sidebar.success("Сигнал доставлен в чат!")
             else:
-                st.sidebar.error(f"Ошибка {res.status_code}. Проверь: 1. Бот - админ в группе. 2. ID группы верный.")
+                # ВЫВОДИМ ТОЧНУЮ ОШИБКУ ОТ ТЕЛЕГРАМА
+                st.sidebar.error(f"Telegram ответил: {res.text}")
+                
         except Exception as e:
-            st.sidebar.error(f"Сбой связи: {e}")
+            st.sidebar.error(f"Ошибка соединения: {e}")
+
 else:
     if input_pass:
         st.sidebar.error("Неверный ключ!")
