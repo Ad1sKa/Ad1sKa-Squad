@@ -1,13 +1,11 @@
 import streamlit as st
 import os
 from datetime import datetime
-import urllib.parse
 
 # --- 1. НАСТРОЙКИ ---
-# Установи свой пароль здесь:
 MASTER_PASSWORD = "342z50f9dcrtxj6-mk87" 
 
-st.set_page_config(page_title="Ad1sKa Squad HQ", page_icon="🛡️")
+st.set_page_config(page_title="Ad1sKa Squad", page_icon="🛡️")
 
 # Стилизация (Золото на черном)
 st.markdown("""
@@ -19,15 +17,16 @@ st.markdown("""
     .sos-link { 
         display: block; width: 100%; text-align: center; background-color: #CC0000; 
         color: white !important; padding: 15px; border-radius: 10px; 
-        text-decoration: none; font-weight: bold; font-size: 20px; border: 2px solid #FFD700; 
+        text-decoration: none; font-weight: bold; font-size: 22px; border: 2px solid #FFD700; 
     }
     .sos-link:hover { background-color: #FF0000; box-shadow: 0px 0px 15px #FFD700; }
     </style>
     """, unsafe_allow_html=True)
 
-# Таймер
+# Таймер единства
 start_date = datetime(2026, 3, 14) 
 delta = datetime.now() - start_date
+
 st.title("AD1SKA SQUAD HQ")
 st.markdown(f"<h3 style='text-align: center; color: #00FF00;'>🛡️ ВМЕСТЕ: {delta.days} ДНЕЙ</h3>", unsafe_allow_html=True)
 st.divider()
@@ -40,27 +39,21 @@ if input_pass == MASTER_PASSWORD:
     st.sidebar.success("Доступ разрешен!")
     st.subheader("🚨 ЭКСТРЕННЫЙ ВЫЗОВ")
     
-    # Текст сообщения
-    msg = "🚨 ВНИМАНИЕ! АРХИТЕКТОР ОБЪЯВИЛ ОБЩИЙ СБОР! ВСЕМ БЫТЬ НА СВЯЗИ! 🚨"
-    encoded_msg = urllib.parse.quote(msg)
-    
-    # ПРЯМОЙ МЕТОД: Открывает именно твою группу и подставляет текст
-    # Используем t.me/ad1skasquad?text=...
-    final_url = f"https://t.me{encoded_msg}"
-    
-    st.markdown(f'<a href="{final_url}" target="_blank" class="sos-link">📢 ЗАПУСТИТЬ SOS В ГРУППУ</a>', unsafe_allow_html=True)
-    st.caption("Нажми -> Откроется твоя группа -> Нажми кнопку 'Отправить'.")
+    # ЖЕЛЕЗОБЕТОННАЯ ССЫЛКА БЕЗ СЛОЖНЫХ КОДИРОВОК
+    # Она просто открывает группу. Текст напишешь сам за секунду.
+    st.markdown('<a href="https://t.me" target="_blank" class="sos-link">📢 ПЕРЕЙТИ В ГРУППУ И ДАТЬ SOS</a>', unsafe_allow_html=True)
+    st.caption("Нажми на кнопку, тебя перекинет в группу @ad1skasquad. Напиши 'SOS' и все!")
 else:
     if input_pass:
         st.sidebar.error("Неверный ключ!")
 
-# --- 3. АРХИВ ---
+# --- 3. ВЕРХОВНЫЙ АРХИВ ---
 st.subheader("📁 ВЕРХОВНЫЙ АРХИВ")
 files = {
     "📜 ДЕКЛАРАЦИЯ": "декларация о независимости.txt",
-    "⚖️ КОДЕКС": "кодекс поведения и правила.txt",
-    "🛡️ ЗАКОНЫ": "свод законов.txt",
-    "📄 ХАРТИЯ": "хартия.txt"
+    "⚖️ КОДЕКС И ПРАВИЛА": "кодекс поведения и правила.txt",
+    "🛡️ ВЕРХОВНЫЕ ЗАКОНЫ": "свод законов.txt",
+    "📄 ОБЩАЯ ХАРТИЯ": "хартия.txt"
 }
 
 col1, col2 = st.columns(2)
@@ -73,13 +66,13 @@ for i, (name, path) in enumerate(files.items()):
             else:
                 st.error(f"Файл {path} не найден")
 
-# --- 4. СОСТАВ ---
+# --- 4. ЗОЛОТОЙ СОСТАВ ---
 st.divider()
 st.subheader("👥 БРАТСТВО СКВАДА")
 squad_members = [
-    {"role": "👑 Архитектор", "nick": "Ad1sKa"},
-    {"role": "🛡️ Участник", "nick": "Твой_Друг_1"},
-    {"role": "🛡️ Участник", "nick": "Твой_Друг_2"}
+    {"role": "👑 Архитектор (Основатель)", "nick": "Ad1sKa"},
+    {"role": "🛡️ Участник", "nick": "Ник_1"},
+    {"role": "🛡️ Участник", "nick": "Ник_2"}
 ]
 for member in squad_members:
     st.markdown(f"**{member['role']}**: `{member['nick']}`")
