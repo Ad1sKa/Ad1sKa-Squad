@@ -4,10 +4,8 @@ from datetime import datetime
 import urllib.parse
 
 # --- 1. НАСТРОЙКИ ---
-# Твой пароль для доступа к кнопке SOS
+# Установи свой пароль здесь:
 MASTER_PASSWORD = "342z50f9dcrtxj6-mk87" 
-# Ссылка на твою публичную группу
-GROUP_LINK = "https://t.me/ad1skasquad" 
 
 st.set_page_config(page_title="Ad1sKa Squad HQ", page_icon="🛡️")
 
@@ -27,17 +25,16 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# Таймер единства
+# Таймер
 start_date = datetime(2026, 3, 14) 
 delta = datetime.now() - start_date
-
 st.title("AD1SKA SQUAD HQ")
 st.markdown(f"<h3 style='text-align: center; color: #00FF00;'>🛡️ ВМЕСТЕ: {delta.days} ДНЕЙ</h3>", unsafe_allow_html=True)
 st.divider()
 
 # --- 2. ПАНЕЛЬ АРХИТЕКТОРА ---
 st.sidebar.header("🔐 ПАНЕЛЬ УПРАВЛЕНИЯ")
-input_pass = st.sidebar.text_input("Ключ Архитектора", type="password")
+input_pass = st.sidebar.text_input("Введите ключ Архитектора", type="password")
 
 if input_pass == MASTER_PASSWORD:
     st.sidebar.success("Доступ разрешен!")
@@ -47,17 +44,17 @@ if input_pass == MASTER_PASSWORD:
     msg = "🚨 ВНИМАНИЕ! АРХИТЕКТОР ОБЪЯВИЛ ОБЩИЙ СБОР! ВСЕМ БЫТЬ НА СВЯЗИ! 🚨"
     encoded_msg = urllib.parse.quote(msg)
     
-    # ПРЯМАЯ ССЫЛКА НА ГРУППУ С ТЕКСТОМ
-    # Эта ссылка откроет конкретно твою группу и подставит текст
-    share_url = f"https://t.me{GROUP_LINK}&text={encoded_msg}"
+    # ПРЯМОЙ МЕТОД: Открывает именно твою группу и подставляет текст
+    # Используем t.me/ad1skasquad?text=...
+    final_url = f"https://t.me{encoded_msg}"
     
-    st.markdown(f'<a href="{share_url}" target="_blank" class="sos-link">📢 ЗАПУСТИТЬ SOS В ГРУППУ</a>', unsafe_allow_html=True)
-    st.caption("Нажми на кнопку -> Откроется Telegram -> Нажми 'Отправить' в группе.")
+    st.markdown(f'<a href="{final_url}" target="_blank" class="sos-link">📢 ЗАПУСТИТЬ SOS В ГРУППУ</a>', unsafe_allow_html=True)
+    st.caption("Нажми -> Откроется твоя группа -> Нажми кнопку 'Отправить'.")
 else:
     if input_pass:
         st.sidebar.error("Неверный ключ!")
 
-# --- 3. ВЕРХОВНЫЙ АРХИВ ---
+# --- 3. АРХИВ ---
 st.subheader("📁 ВЕРХОВНЫЙ АРХИВ")
 files = {
     "📜 ДЕКЛАРАЦИЯ": "декларация о независимости.txt",
@@ -76,7 +73,7 @@ for i, (name, path) in enumerate(files.items()):
             else:
                 st.error(f"Файл {path} не найден")
 
-# --- 4. ЗОЛОТОЙ СОСТАВ ---
+# --- 4. СОСТАВ ---
 st.divider()
 st.subheader("👥 БРАТСТВО СКВАДА")
 squad_members = [
