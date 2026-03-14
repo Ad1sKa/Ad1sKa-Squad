@@ -3,7 +3,7 @@ import os
 import requests
 from datetime import datetime
 
-# --- 1. НАСТРОЙКИ (ОТРЕДАКТИРУЙ ЭТО) ---
+# --- 1. НАСТРОЙКИ (ОТРЕДАКТИРУЙ ТОЛЬКО ЭТО) ---
 # Твой секретный пароль для появления кнопки SOS
 MASTER_PASSWORD = "342z50f9dcrtxj6-mk87" 
 
@@ -12,7 +12,7 @@ GROUP_CHAT_ID = "-1003816680156"
 
 st.set_page_config(page_title="Ad1sKa Squad HQ", page_icon="🛡️")
 
-# --- 2. СТИЛИЗАЦИЯ (ЗОЛОТО НА ЧЕРНОМ) ---
+# --- 2. СТИЛИЗАЦИЯ ---
 st.markdown("""
     <style>
     .stApp { background-color: #0e1117; color: #ffffff; }
@@ -30,33 +30,38 @@ st.title("AD1SKA SQUAD HQ")
 st.markdown(f"<h3 style='text-align: center; color: #00FF00;'>🛡️ МЫ ЕДИНЫ: {delta.days} ДНЕЙ</h3>", unsafe_allow_html=True)
 st.divider()
 
-# --- 4. ПАНЕЛЬ АРХИТЕКТОРА (В БОКОВОЙ ПАНЕЛИ) ---
+# --- 4. ПАНЕЛЬ АРХИТЕКТОРА ---
 st.sidebar.header("🔐 ДОСТУП АРХИТЕКТОРА")
 input_pass = st.sidebar.text_input("Введите секретный ключ", type="password")
 
 if input_pass == MASTER_PASSWORD:
     st.sidebar.success("Доступ разрешен!")
     if st.sidebar.button("🚨 ОТПРАВИТЬ SOS В ГРУППУ"):
-        text = "🚨 ВНИМАНИЕ! АРХИТЕКТОР ОБЪЯВИЛ ОБЩИЙ СБОР! 🚨\nВСЕМ УЧАСТНИКАМ AD1SKA SQUAD СРОЧНО ВЫЙТИ НА СВЯЗЬ!"
+        # Добавляем время, чтобы сообщения не считались дублями
+        current_time = datetime.now().strftime("%H:%M:%S")
+        text = f"🚨 ВНИМАНИЕ! АРХИТЕКТОР ОБЪЯВИЛ ОБЩИЙ СБОР! 🚨\nМЕТКА ВРЕМЕНИ: {current_time}"
         
-        # ПРЯМАЯ ССЫЛКА С /bot И ТОКЕНОМ ВРУЧНУЮ (БЕЗ ПЕРЕМЕННЫХ)
+        # Прямая ссылка
         full_url = "https://api.telegram.org"
         
         try:
             res = requests.post(full_url, data={"chat_id": GROUP_CHAT_ID, "text": text})
-            if res.status_code == 200:
+            response_data = res.json()
+            
+            if res.status_code == 200 and response_data.get("ok"):
                 st.sidebar.snow()
-                st.sidebar.success("СИГНАЛ УСПЕШНО ОТПРАВЛЕН В ЧАТ!")
+                st.sidebar.success(f"СИГНАЛ ПРИНЯТ ТЕЛЕГРАМОМ!")
             else:
-                # Вывод точной ошибки от Telegram в случае неудачи
-                st.sidebar.error(f"Ошибка Telegram: {res.text}")
+                # ВЫВОДИМ ТОЧНУЮ ПРИЧИНУ ОШИБКИ
+                error_msg = response_data.get('description', 'Неизвестная ошибка')
+                st.sidebar.error(f"Telegram отклонил: {error_msg}")
         except Exception as e:
             st.sidebar.error(f"Сбой сети: {e}")
 else:
     if input_pass:
         st.sidebar.error("Неверный ключ!")
 
-# --- 5. ЦИФРОВОЙ АРХИВ (ДОКУМЕНТЫ) ---
+# --- 5. ЦИФРОВОЙ АРХИВ ---
 st.subheader("📁 ВЕРХОВНЫЙ АРХИВ")
 files = {
     "📜 ДЕКЛАРАЦИЯ": "декларация о независимости.txt",
@@ -72,18 +77,15 @@ for i, (name, path) in enumerate(files.items()):
             if os.path.exists(path):
                 with open(path, "r", encoding="utf-8") as f:
                     st.info(f.read())
-            else:
-                st.error(f"Файл '{path}' не найден.")
 
 # --- 6. ЗОЛОТОЙ СОСТАВ ---
 st.divider()
 st.subheader("👥 БРАТСТВО СКВАДА")
 squad_members = [
-    {"role": "👑 Архитектор (Основатель)", "nick": "Ad1sKa"},
+    {"role": "👑 Архитектор", "nick": "Ad1sKa"},
     {"role": "🛡️ Участник", "nick": "Твой_Друг_1"},
     {"role": "🛡️ Участник", "nick": "Твой_Друг_2"}
 ]
-
 for member in squad_members:
     st.markdown(f"**{member['role']}**: `{member['nick']}`")
 
@@ -94,4 +96,4 @@ if os.path.exists("гимн.mp3"):
     st.audio("гимн.mp3")
 
 st.divider()
-st.caption("© 2026 Ad1sKa Squad. Система защищена кодом Архитектора.")
+st.caption("© 2026 Ad1sKa Squad.")
