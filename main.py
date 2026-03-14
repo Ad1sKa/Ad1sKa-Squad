@@ -3,14 +3,17 @@ import os
 import requests
 from datetime import datetime
 
-# --- 1. ДАННЫЕ (ОТРЕДАКТИРУЙ ЭТО) ---
-# Токен твоего бота: 8714620396:AAGRsWh-vcDEzWE4GqE19d8zUy4znnHYRho
-GROUP_CHAT_ID = "-1003816680156" 
-MASTER_PASSWORD = "342z50f9dcrtxj6-mk87" 
+# --- 1. НАСТРОЙКИ (ОТРЕДАКТИРУЙ ТОЛЬКО ЭТО) ---
+# Твой секретный пароль для появления кнопки SOS
+MASTER_PASSWORD = "ВАШ_ПАРОЛЬ_АРХИТЕКТОРА" 
+
+# Данные для Telegram (уже вписаны твои)
+BOT_TOKEN = "8714620396:AAGRsWh-vcDEzWE4GqE19d8zUy4znnHYRho"
+GROUP_CHAT_ID = "-1003816680156"
 
 st.set_page_config(page_title="Ad1sKa Squad HQ", page_icon="🛡️")
 
-# --- 2. СТИЛИЗАЦИЯ ---
+# --- 2. СТИЛИЗАЦИЯ (ЗОЛОТО НА ЧЕРНОМ) ---
 st.markdown("""
     <style>
     .stApp { background-color: #0e1117; color: #ffffff; }
@@ -34,20 +37,24 @@ input_pass = st.sidebar.text_input("Введите секретный ключ",
 
 if input_pass == MASTER_PASSWORD:
     st.sidebar.success("Доступ разрешен!")
-    # Тут ровно 4 пробела перед 'if'
     if st.sidebar.button("🚨 ОТПРАВИТЬ SOS В ГРУППУ"):
-        text = "🚨 ВНИМАНИЕ! АРХИТЕКТОР ОБЪЯВИЛ ОБЩИЙ СБОР! 🚨"
-        url = "https://api.telegram.org"
+        text = "🚨 ВНИМАНИЕ! АРХИТЕКТОР ОБЪЯВИЛ ОБЩИЙ СБОР! 🚨\nВСЕМ УЧАСТНИКАМ AD1SKA SQUAD СРОЧНО ВЫЙТИ НА СВЯЗЬ!"
+        
+        # Прямая ссылка (самый надежный способ без ошибок парсинга)
+        url = f"https://api.telegram.org{BOT_TOKEN}/sendMessage"
+        
         try:
+            # Отправка запроса
             res = requests.post(url, data={"chat_id": GROUP_CHAT_ID, "text": text})
+            
             if res.status_code == 200:
                 st.sidebar.snow()
-                st.sidebar.success("Сигнал отправлен!")
+                st.sidebar.success("СИГНАЛ УШЕЛ В ЧАТ!")
             else:
-                st.sidebar.error(f"Telegram ошибка: {res.text}")
+                # Если ошибка — выводим её точный текст от Telegram
+                st.sidebar.error(f"Ошибка Telegram: {res.text}")
         except Exception as e:
-            st.sidebar.error(f"Сбой связи: {e}")
-
+            st.sidebar.error(f"Сбой сети: {e}")
 else:
     if input_pass:
         st.sidebar.error("Неверный ключ!")
