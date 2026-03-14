@@ -4,7 +4,7 @@ import requests
 from datetime import datetime
 
 # --- 1. НАСТРОЙКИ И ДАННЫЕ (ОТРЕДАКТИРУЙ ЭТО) ---
-BOT_TOKEN = "6762780884"
+BOT_TOKEN = "8714620396:AAGRsWh-vcDEzWE4GqE19d8zUy4znnHYRho"
 GROUP_CHAT_ID = "-5268681894"
 MASTER_PASSWORD = "342z50f9dcrtxj6-mk87" # Твой секретный ключ Архитектора
 
