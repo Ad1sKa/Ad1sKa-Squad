@@ -34,7 +34,7 @@ input_pass = st.sidebar.text_input("Введите секретный ключ",
 
 if input_pass == MASTER_PASSWORD:
     st.sidebar.success("Доступ разрешен!")
-        if st.sidebar.button("🚨 ОТПРАВИТЬ SOS В ГРУППУ"):
+            if st.sidebar.button("🚨 ОТПРАВИТЬ SOS В ГРУППУ"):
         text = "🚨 ВНИМАНИЕ! АРХИТЕКТОР ОБЪЯВИЛ ОБЩИЙ СБОР! 🚨"
         url = "https://api.telegram.org"
         
