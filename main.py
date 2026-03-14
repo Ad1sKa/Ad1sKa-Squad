@@ -3,12 +3,11 @@ import os
 import requests
 from datetime import datetime
 
-# --- 1. НАСТРОЙКИ (ОТРЕДАКТИРУЙ ТОЛЬКО ЭТО) ---
+# --- 1. НАСТРОЙКИ (ОТРЕДАКТИРУЙ ЭТО) ---
 # Твой секретный пароль для появления кнопки SOS
 MASTER_PASSWORD = "342z50f9dcrtxj6-mk87" 
 
-# Данные для Telegram (уже вписаны твои)
-BOT_TOKEN = "8714620396:AAGRsWh-vcDEzWE4GqE19d8zUy4znnHYRho"
+# Данные для Telegram
 GROUP_CHAT_ID = "-1003816680156"
 
 st.set_page_config(page_title="Ad1sKa Squad HQ", page_icon="🛡️")
@@ -40,18 +39,16 @@ if input_pass == MASTER_PASSWORD:
     if st.sidebar.button("🚨 ОТПРАВИТЬ SOS В ГРУППУ"):
         text = "🚨 ВНИМАНИЕ! АРХИТЕКТОР ОБЪЯВИЛ ОБЩИЙ СБОР! 🚨\nВСЕМ УЧАСТНИКАМ AD1SKA SQUAD СРОЧНО ВЫЙТИ НА СВЯЗЬ!"
         
-        # Прямая ссылка (самый надежный способ без ошибок парсинга)
-        url = f"https://api.telegram.org{BOT_TOKEN}/sendMessage"
+        # ПРЯМАЯ ССЫЛКА С /bot И ТОКЕНОМ ВРУЧНУЮ (БЕЗ ПЕРЕМЕННЫХ)
+        full_url = "https://api.telegram.org"
         
         try:
-            # Отправка запроса
-            res = requests.post(url, data={"chat_id": GROUP_CHAT_ID, "text": text})
-            
+            res = requests.post(full_url, data={"chat_id": GROUP_CHAT_ID, "text": text})
             if res.status_code == 200:
                 st.sidebar.snow()
-                st.sidebar.success("СИГНАЛ УШЕЛ В ЧАТ!")
+                st.sidebar.success("СИГНАЛ УСПЕШНО ОТПРАВЛЕН В ЧАТ!")
             else:
-                # Если ошибка — выводим её точный текст от Telegram
+                # Вывод точной ошибки от Telegram в случае неудачи
                 st.sidebar.error(f"Ошибка Telegram: {res.text}")
         except Exception as e:
             st.sidebar.error(f"Сбой сети: {e}")
