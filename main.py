@@ -37,7 +37,7 @@ if input_pass == MASTER_PASSWORD:
     st.sidebar.success("Доступ разрешен!")
     if st.sidebar.button("🚨 ОТПРАВИТЬ SOS В ГРУППУ"):
         text = "🚨 ВНИМАНИЕ! АРХИТЕКТОР ОБЪЯВИЛ ОБЩИЙ СБОР! 🚨\nВСЕМ УЧАСТНИКАМ AD1SKA SQUAD СРОЧНО ВЫЙТИ НА СВЯЗЬ!"
-        url = f"https://api.telegram.org{8714620396:AAGRsWh-vcDEzWE4GqE19d8zUy4znnHYRho}/sendMessage"
+        url = f"https://api.telegram.org{BOT_TOKEN}/sendMessage"
         try:
             res = requests.post(url, data={"chat_id": GROUP_CHAT_ID, "text": text})
             if res.status_code == 200:
