@@ -6,7 +6,7 @@ import urllib.parse
 # --- 1. НАСТРОЙКИ ---
 MASTER_PASSWORD = "342z50f9dcrtxj6-mk87" 
 # Ссылка на твою группу (возьми её в настройках группы, типа t.me/joinchat/...)
-GROUP_LINK = "https://t.me/+UrZC9EjkBpdlN2Iy" 
+GROUP_LINK = "https://t.me/ad1skasquad" 
 
 st.set_page_config(page_title="Ad1sKa Squad HQ", page_icon="🛡️")
 
