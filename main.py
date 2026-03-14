@@ -1,31 +1,57 @@
 import streamlit as st
 import os
+import requests
 from datetime import datetime
 
-# 1. НАСТРОЙКИ СТРАНИЦЫ
+# --- 1. НАСТРОЙКИ И ДАННЫЕ (ОТРЕДАКТИРУЙ ЭТО) ---
+BOT_TOKEN = "6762780884"
+GROUP_CHAT_ID = "-5268681894"
+MASTER_PASSWORD = "342z50f9dcrtxj6-mk87" # Твой секретный ключ Архитектора
+
 st.set_page_config(page_title="Ad1sKa Squad HQ", page_icon="🛡️")
 
-# Стилизация под золото и темную сталь
+# --- 2. СТИЛИЗАЦИЯ (ЗОЛОТО НА ЧЕРНОМ) ---
 st.markdown("""
     <style>
     .stApp { background-color: #0e1117; color: #ffffff; }
     h1 { color: #FFD700; text-align: center; font-family: 'Arial Black'; text-shadow: 2px 2px #000; }
     .stButton>button { width: 100%; border-radius: 10px; border: 1px solid #FFD700; background-color: #1a1a1a; color: white; transition: 0.3s; }
-    .stButton>button:hover { background-color: #FFD700; color: black; border: 1px solid white; }
+    .stButton>button:hover { background-color: #FFD700; color: black; }
+    .css-10trblm { color: #FFD700; }
     </style>
     """, unsafe_allow_html=True)
 
-# 2. ТАЙМЕР ЕДИНСТВА
-# Укажи дату основания (Год, Месяц, День)
-start_date = datetime(2026, 3, 14) 
-now = datetime.now()
-delta = now - start_date
+# --- 3. ТАЙМЕР ЕДИНСТВА ---
+start_date = datetime(2026, 3, 14) # Дата основания
+delta = datetime.now() - start_date
 
 st.title("AD1SKA SQUAD HQ")
-st.markdown(f"<h3 style='text-align: center; color: #00FF00;'>🛡️ ВМЕСТЕ УЖЕ: {delta.days} ДНЕЙ</h3>", unsafe_allow_html=True)
+st.markdown(f"<h3 style='text-align: center; color: #00FF00;'>🛡️ МЫ ЕДИНЫ: {delta.days} ДНЕЙ</h3>", unsafe_allow_html=True)
 st.divider()
 
-# 3. ЦИФРОВОЙ АРХИВ (Документы)
+# --- 4. ПАНЕЛЬ АРХИТЕКТОРА (В БОКОВОЙ ПАНЕЛИ) ---
+st.sidebar.header("🔐 ДОСТУП АРХИТЕКТОРА")
+input_pass = st.sidebar.text_input("Введите секретный ключ", type="password")
+
+if input_pass == MASTER_PASSWORD:
+    st.sidebar.success("Доступ разрешен!")
+    if st.sidebar.button("🚨 ОТПРАВИТЬ SOS В ГРУППУ"):
+        text = "🚨 ВНИМАНИЕ! АРХИТЕКТОР ОБЪЯВИЛ ОБЩИЙ СБОР! 🚨\nВСЕМ УЧАСТНИКАМ AD1SKA SQUAD СРОЧНО ВЫЙТИ НА СВЯЗЬ!"
+        url = f"https://api.telegram.org{BOT_TOKEN}/sendMessage"
+        try:
+            res = requests.post(url, data={"chat_id": GROUP_CHAT_ID, "text": text})
+            if res.status_code == 200:
+                st.sidebar.snow()
+                st.sidebar.success("Сигнал успешно отправлен в Telegram!")
+            else:
+                st.sidebar.error(f"Ошибка: {res.status_code}. Проверь токен и ID группы.")
+        except Exception as e:
+            st.sidebar.error(f"Сбой связи: {e}")
+else:
+    if input_pass:
+        st.sidebar.error("Неверный ключ!")
+
+# --- 5. ЦИФРОВОЙ АРХИВ (ДОКУМЕНТЫ) ---
 st.subheader("📁 ВЕРХОВНЫЙ АРХИВ")
 files = {
     "📜 ДЕКЛАРАЦИЯ": "декларация о независимости.txt",
@@ -34,7 +60,6 @@ files = {
     "📄 ОБЩАЯ ХАРТИЯ": "хартия.txt"
 }
 
-# Размещаем кнопки в два столбика
 col1, col2 = st.columns(2)
 for i, (name, path) in enumerate(files.items()):
     with (col1 if i % 2 == 0 else col2):
@@ -43,28 +68,27 @@ for i, (name, path) in enumerate(files.items()):
                 with open(path, "r", encoding="utf-8") as f:
                     st.info(f.read())
             else:
-                st.error("Файл не найден")
+                st.error(f"Файл '{path}' не найден в репозитории.")
 
-# 4. ЗОЛОТОЙ СОСТАВ
+# --- 6. ЗОЛОТОЙ СОСТАВ ---
 st.divider()
 st.subheader("👥 БРАТСТВО СКВАДА")
-# Список участников — впиши ники своих пацанов здесь
 squad_members = [
     {"role": "👑 Архитектор (Основатель)", "nick": "Ad1sKa"},
-    {"role": "🛡️ Участник", "nick": "Ник_1"},
-    {"role": "🛡️ Участник", "nick": "Ник_2"},
-    {"role": "🛡️ Участник", "nick": "Ник_3"}
+    {"role": "🛡️ Участник", "nick": "Тут_твой_друг_1"},
+    {"role": "🛡️ Участник", "nick": "Тут_твой_друг_2"}
 ]
 
 for member in squad_members:
     st.markdown(f"**{member['role']}**: `{member['nick']}`")
 
-# 5. ГИМН И СИГНАЛ SOS
+# --- 7. ПЛЕЕР ГИМНА ---
 st.divider()
 st.subheader("🎵 ГИМН КОМАНДЫ")
 if os.path.exists("гимн.mp3"):
     st.audio("гимн.mp3")
+else:
+    st.caption("Файл гимн.mp3 не найден")
 
-if st.button("🚨 ЗАПУСТИТЬ ОБЩИЙ СБОР (SOS)", type="primary"):
-    st.snow()
-    st.warning("ВНИМАНИЕ! ВСЕМ УЧАСТНИКАМ AD1SKA SQUAD НЕМЕДЛЕННО ВЫЙТИ НА СВЯЗЬ!")
+st.divider()
+st.caption("© 2026 Ad1sKa Squad. Система защищена кодом Архитектора.")
