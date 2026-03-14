@@ -34,19 +34,19 @@ input_pass = st.sidebar.text_input("Введите секретный ключ",
 
 if input_pass == MASTER_PASSWORD:
     st.sidebar.success("Доступ разрешен!")
-    if st.sidebar.button("🚨 ОТПРАВИТЬ SOS В ГРУППУ"):
+       if st.sidebar.button("🚨 ОТПРАВИТЬ SOS В ГРУППУ"):
         text = "🚨 ВНИМАНИЕ! АРХИТЕКТОР ОБЪЯВИЛ ОБЩИЙ СБОР! 🚨\nВСЕМ УЧАСТНИКАМ AD1SKA SQUAD СРОЧНО ВЫЙТИ НА СВЯЗЬ!"
         
-        # ИСПРАВЛЕННАЯ ССЫЛКА (Обязательно со слэшем и словом bot)
-        url = f"https://api.telegram.org{BOT_TOKEN}/sendMessage"
+        # Прописал адрес ВРУЧНУЮ, чтобы ничего не склеивалось
+        url = "https://api.telegram.org"
         
         try:
             res = requests.post(url, data={"chat_id": GROUP_CHAT_ID, "text": text})
             if res.status_code == 200:
                 st.sidebar.snow()
-                st.sidebar.success("Сигнал успешно отправлен в Telegram!")
+                st.sidebar.success("Сигнал успешно отправлен!")
             else:
-                st.sidebar.error(f"Ошибка {res.status_code}. Убедись, что бот — АДМИН в группе!")
+                st.sidebar.error(f"Ошибка {res.status_code}. Проверь: 1. Бот — АДМИН в группе. 2. Верный ID группы.")
         except Exception as e:
             st.sidebar.error(f"Сбой связи: {e}")
 else:
