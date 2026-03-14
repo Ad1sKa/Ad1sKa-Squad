@@ -36,7 +36,6 @@ if input_pass == MASTER_PASSWORD:
     st.sidebar.success("Доступ разрешен!")
        if st.sidebar.button("🚨 ОТПРАВИТЬ SOS В ГРУППУ"):
         text = "🚨 ВНИМАНИЕ! АРХИТЕКТОР ОБЪЯВИЛ ОБЩИЙ СБОР! 🚨\nВСЕМ УЧАСТНИКАМ AD1SKA SQUAD СРОЧНО ВЫЙТИ НА СВЯЗЬ!"
-        
         # Прописал адрес ВРУЧНУЮ, чтобы ничего не склеивалось
         url = "https://api.telegram.org"
         
@@ -77,8 +76,8 @@ st.divider()
 st.subheader("👥 БРАТСТВО СКВАДА")
 squad_members = [
     {"role": "👑 Архитектор (Основатель)", "nick": "Ad1sKa"},
-    {"role": "🛡️ Участник", "nick": "Твой_Друг_1"},
-    {"role": "🛡️ Участник", "nick": "Твой_Друг_2"}
+    {"role": "🛡️ Участник", "nick": "Здесь может оказаться ваше имя"},
+    {"role": "🛡️ Участник", "nick": "Здесь может оказаться ваше имя"}
 ]
 
 for member in squad_members:
