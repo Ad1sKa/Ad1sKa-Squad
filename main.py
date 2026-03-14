@@ -5,7 +5,7 @@ from datetime import datetime
 
 # --- 1. ДАННЫЕ (ОТРЕДАКТИРУЙ ЭТО) ---
 BOT_TOKEN = "8714620396:AAGRsWh-vcDEzWE4GqE19d8zUy4znnHYRho"
-GROUP_CHAT_ID = "-5268681894" # Например: "-100123456789"
+GROUP_CHAT_ID = "-1003816680156" # Например: "-100123456789"
 MASTER_PASSWORD = "342z50f9dcrtxj6-mk87" 
 
 st.set_page_config(page_title="Ad1sKa Squad HQ", page_icon="🛡️")
